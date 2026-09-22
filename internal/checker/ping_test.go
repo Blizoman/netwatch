@@ -42,7 +42,12 @@ func TestCheckPingLoopback(t *testing.T) {
 }
 
 func looksLikePermissionError(msg string) bool {
+	msg = strings.ToLower(msg)
 	return strings.Contains(msg, "operation not permitted") ||
 		strings.Contains(msg, "permission denied") ||
-		strings.Contains(msg, "socket type not supported")
+		strings.Contains(msg, "socket type not supported") ||
+		strings.Contains(msg, "protocol not supported") ||
+		strings.Contains(msg, "address family not supported") ||
+		strings.Contains(msg, "forbidden by its access permissions") ||
+		strings.Contains(msg, "access is denied")
 }
