@@ -1,0 +1,55 @@
+version: 2
+
+project_name: netwatch
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: netwatch
+    main: ./cmd/netwatch
+    binary: netwatch
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w
+      - -X github.com/Blizoman/netwatch/internal/version.Version={{ .Version }}
+      - -X github.com/Blizoman/netwatch/internal/version.Commit={{ .ShortCommit }}
+      - -X github.com/Blizoman/netwatch/internal/version.Date={{ .Date }}
+
+archives:
+  - id: netwatch
+    formats: [tar.gz]
+    name_template: >-
+      {{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    files:
+      - README.md
+      - LICENSE
+      - CHANGELOG.md
+
+checksum:
+  name_template: "checksums.txt"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^test:"
+      - "^ci:"
+      - "^chore:"
+
+release:
+  github:
+    owner: Blizoman
+    name: netwatch

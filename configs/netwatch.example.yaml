@@ -1,0 +1,34 @@
+# Example netwatch configuration file.
+# Run with: netwatch check --config netwatch.example.yaml
+#           netwatch watch --config netwatch.example.yaml
+
+# How often "watch" mode re-runs all checks.
+interval: 30s
+
+# How long to wait for any single check before it's marked failed.
+timeout: 5s
+
+# Number of ICMP echo requests sent per ping check.
+ping_count: 5
+
+# Maximum TTL probed by traceroute before giving up.
+max_hops: 30
+
+# Maximum number of checks running at the same time.
+concurrency: 8
+
+# "human" (colored table) or "json" (newline-delimited JSON).
+output: human
+no_color: false
+
+targets:
+  - host: example.com
+    port: 443
+    checks: [dns, tcp, ping]
+
+  - host: 1.1.1.1
+    checks: [ping, traceroute]
+
+  - host: 8.8.8.8
+    port: 53
+    checks: [dns, tcp, ping]
